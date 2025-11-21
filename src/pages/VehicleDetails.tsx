@@ -150,7 +150,7 @@ const VehicleDetails = () => {
                 <div className="pt-6 border-t space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Vendedor</span>
-                    <span className="font-medium">Loja de Carros de Pobre</span>
+                    <span className="font-medium">Vendas de Lata Veia</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Localização</span>

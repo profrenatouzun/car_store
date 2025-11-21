@@ -75,9 +75,9 @@ const FilterSidebar = ({ filters, onFilterChange }: FilterSidebarProps) => {
             <Slider
               value={[filters.maxPrice]}
               onValueChange={([value]) => onFilterChange({ ...filters, maxPrice: value })}
-              max={50000}
-              min={10000}
-              step={1000}
+              max={30000}
+              min={5000}
+              step={500}
             />
             <div className="text-sm text-muted-foreground text-center">
               até R$ {filters.maxPrice.toLocaleString('pt-BR')}
@@ -93,9 +93,9 @@ const FilterSidebar = ({ filters, onFilterChange }: FilterSidebarProps) => {
               <Input
                 type="number"
                 value={filters.minYear}
-                onChange={(e) => onFilterChange({ ...filters, minYear: parseInt(e.target.value) || 2000 })}
-                min={2000}
-                max={2024}
+                onChange={(e) => onFilterChange({ ...filters, minYear: parseInt(e.target.value) || 1996 })}
+                min={1996}
+                max={2008}
               />
             </div>
             <div className="space-y-1">
@@ -103,9 +103,9 @@ const FilterSidebar = ({ filters, onFilterChange }: FilterSidebarProps) => {
               <Input
                 type="number"
                 value={filters.maxYear}
-                onChange={(e) => onFilterChange({ ...filters, maxYear: parseInt(e.target.value) || 2024 })}
-                min={2000}
-                max={2024}
+                onChange={(e) => onFilterChange({ ...filters, maxYear: parseInt(e.target.value) || 2008 })}
+                min={1996}
+                max={2008}
               />
             </div>
           </div>
@@ -116,11 +116,11 @@ const FilterSidebar = ({ filters, onFilterChange }: FilterSidebarProps) => {
           className="w-full"
           onClick={() => onFilterChange({
             brand: 'Todas',
-            minPrice: 10000,
-            maxPrice: 50000,
+            minPrice: 5000,
+            maxPrice: 30000,
             fuelType: 'Todos',
-            minYear: 2000,
-            maxYear: 2024,
+            minYear: 1996,
+            maxYear: 2008,
           })}
         >
           Limpar Filtros

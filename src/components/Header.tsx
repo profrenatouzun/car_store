@@ -11,8 +11,8 @@ const Header = () => {
             <Car className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg leading-none">Loja de Carros</span>
-            <span className="text-xs text-muted-foreground">de Pobre</span>
+            <span className="font-bold text-lg leading-none">Vendas de</span>
+            <span className="text-xs text-muted-foreground">Lata Veia</span>
           </div>
         </Link>
 
