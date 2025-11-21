@@ -10,11 +10,11 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     brand: "Todas",
-    minPrice: 10000,
-    maxPrice: 50000,
+    minPrice: 5000,
+    maxPrice: 30000,
     fuelType: "Todos",
-    minYear: 2000,
-    maxYear: 2024,
+    minYear: 1996,
+    maxYear: 2008,
   });
 
   const filteredVehicles = mockVehicles.filter((vehicle) => {
@@ -45,10 +45,10 @@ const Index = () => {
       <section className="gradient-primary py-16 text-center text-primary-foreground">
         <div className="container">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Encontre o Carro dos Seus Sonhos
+            Sua Lata Véia Está Aqui!
           </h1>
           <p className="text-lg md:text-xl mb-8 opacity-90">
-            Preços honestos, carros confiáveis. Seu próximo carro está aqui!
+            Carros antigos de 1996 a 2008. Clássicos acessíveis e confiáveis!
           </p>
 
           <div className="max-w-2xl mx-auto">
