@@ -4,6 +4,12 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import vehicleRoutes from './routes/vehicleRoutes.js';
+import brandRoutes from './routes/brandRoutes.js';
+import modelRoutes from './routes/modelRoutes.js';
+import itemRoutes from './routes/itemRoutes.js';
+import fuelTypeRoutes from './routes/fuelTypeRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
+import saleRoutes from './routes/saleRoutes.js';
 import pool from './config/database.js';
 
 const app = express();
@@ -29,6 +35,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/brands', brandRoutes);
+app.use('/api/models', modelRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/fuel-types', fuelTypeRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/sales', saleRoutes);
 
 // 404 handler
 app.use((req, res) => {

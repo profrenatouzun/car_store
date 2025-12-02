@@ -448,6 +448,7 @@ class VehicleRepository {
     return result.rows.length > 0;
   }
 }
+}
 
 export default new VehicleRepository();
 

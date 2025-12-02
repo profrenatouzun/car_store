@@ -1,5 +1,6 @@
 import express from 'express';
 import vehicleController from '../controllers/vehicleController.js';
+import vehiclePhotoRoutes from './vehiclePhotoRoutes.js';
 
 const router = express.Router();
 
@@ -172,6 +173,9 @@ router.put('/:id', vehicleController.update.bind(vehicleController));
  *         description: Veículo não encontrado
  */
 router.delete('/:id', vehicleController.delete.bind(vehicleController));
+
+// Rotas de fotos dos veículos (aninhadas)
+router.use('/:id/photos', vehiclePhotoRoutes);
 
 export default router;
 
