@@ -3,21 +3,37 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { mockVehicles, fuelTypeLabels } from "@/data/mockVehicles";
-import { ArrowLeft, Calendar, Fuel, Gauge, Check, Phone, MessageCircle } from "lucide-react";
+import { useVehicle } from "@/hooks/useVehicles";
+import { fuelTypeLabels } from "@/types/vehicle";
+import { ArrowLeft, Calendar, Fuel, Gauge, Check, Phone, MessageCircle, Loader2 } from "lucide-react";
 
 const VehicleDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
-  const vehicle = mockVehicles.find((v) => v.vehicle_id === parseInt(id || "0"));
+  const { data: vehicle, isLoading, error } = useVehicle(parseInt(id || "0"));
 
-  if (!vehicle) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container py-16 text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Carregando veículo...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !vehicle) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container py-16 text-center">
           <h1 className="text-3xl font-bold mb-4">Veículo não encontrado</h1>
+          <p className="text-muted-foreground mb-4">
+            {error ? "Erro ao carregar veículo. Verifique se a API está rodando." : "O veículo solicitado não existe."}
+          </p>
           <Button onClick={() => navigate("/")}>Voltar para a lista</Button>
         </div>
       </div>

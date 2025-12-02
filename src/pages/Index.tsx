@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import VehicleCard from "@/components/VehicleCard";
 import FilterSidebar from "@/components/FilterSidebar";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { mockVehicles, fuelTypeLabels } from "@/data/mockVehicles";
+import { Search, Loader2 } from "lucide-react";
+import { useVehicles } from "@/hooks/useVehicles";
+import { fuelTypeLabels } from "@/types/vehicle";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,25 +18,45 @@ const Index = () => {
     maxYear: 2008,
   });
 
-  const filteredVehicles = mockVehicles.filter((vehicle) => {
-    const matchesSearch =
-      vehicle.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      vehicle.model.toLowerCase().includes(searchTerm.toLowerCase());
+  // Preparar filtros para a API
+  const apiFilters = useMemo(() => {
+    const apiFilter: any = {
+      min_price: filters.minPrice,
+      max_price: filters.maxPrice,
+      min_year: filters.minYear,
+      max_year: filters.maxYear,
+    };
 
-    const matchesBrand = filters.brand === "Todas" || vehicle.brand === filters.brand;
-    
-    const matchesFuel = 
-      filters.fuelType === "Todos" || 
-      fuelTypeLabels[vehicle.fuel_type] === filters.fuelType;
+    if (filters.brand !== "Todas") {
+      apiFilter.brand = filters.brand;
+    }
 
-    const matchesPrice =
-      vehicle.ad_price >= filters.minPrice && vehicle.ad_price <= filters.maxPrice;
+    if (filters.fuelType !== "Todos") {
+      // Converter label para código
+      const fuelCode = Object.entries(fuelTypeLabels).find(
+        ([_, label]) => label === filters.fuelType
+      )?.[0];
+      if (fuelCode) {
+        apiFilter.fuel_type = fuelCode;
+      }
+    }
 
-    const matchesYear =
-      vehicle.year_manufacture >= filters.minYear && vehicle.year_manufacture <= filters.maxYear;
+    return apiFilter;
+  }, [filters]);
 
-    return matchesSearch && matchesBrand && matchesFuel && matchesPrice && matchesYear;
-  });
+  const { data: vehicles = [], isLoading, error } = useVehicles(apiFilters);
+
+  // Filtrar por termo de busca no frontend (já que a API não tem esse filtro)
+  const filteredVehicles = useMemo(() => {
+    if (!searchTerm) return vehicles;
+
+    const searchLower = searchTerm.toLowerCase();
+    return vehicles.filter(
+      (vehicle) =>
+        vehicle.brand.toLowerCase().includes(searchLower) ||
+        vehicle.model.toLowerCase().includes(searchLower)
+    );
+  }, [vehicles, searchTerm]);
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -81,22 +102,44 @@ const Index = () => {
                 Veículos Disponíveis
               </h2>
               <p className="text-muted-foreground">
-                {filteredVehicles.length} {filteredVehicles.length === 1 ? 'veículo encontrado' : 'veículos encontrados'}
+                {isLoading ? (
+                  "Carregando..."
+                ) : error ? (
+                  "Erro ao carregar veículos"
+                ) : (
+                  <>
+                    {filteredVehicles.length} {filteredVehicles.length === 1 ? 'veículo encontrado' : 'veículos encontrados'}
+                  </>
+                )}
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredVehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.vehicle_id} vehicle={vehicle} />
-              ))}
-            </div>
-
-            {filteredVehicles.length === 0 && (
+            {isLoading ? (
+              <div className="flex items-center justify-center py-16">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : error ? (
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg">
-                  Nenhum veículo encontrado com os filtros selecionados.
+                  Erro ao carregar veículos. Verifique se a API está rodando.
                 </p>
               </div>
+            ) : (
+              <>
+                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredVehicles.map((vehicle) => (
+                    <VehicleCard key={vehicle.vehicle_id} vehicle={vehicle} />
+                  ))}
+                </div>
+
+                {filteredVehicles.length === 0 && (
+                  <div className="text-center py-16">
+                    <p className="text-muted-foreground text-lg">
+                      Nenhum veículo encontrado com os filtros selecionados.
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

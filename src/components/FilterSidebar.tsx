@@ -5,6 +5,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
 import { SlidersHorizontal } from "lucide-react";
+import { useBrands, useFuelTypes } from "@/hooks/useVehicles";
+import { fuelTypeLabels } from "@/types/vehicle";
 
 interface FilterSidebarProps {
   filters: {
@@ -19,8 +21,11 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar = ({ filters, onFilterChange }: FilterSidebarProps) => {
-  const brands = ['Todas', 'Fiat', 'Volkswagen', 'Chevrolet', 'Ford', 'Renault'];
-  const fuelTypes = ['Todos', 'Flex', 'Gasolina', 'Diesel', 'Álcool'];
+  const { data: brandsData = [] } = useBrands();
+  const { data: fuelTypesData = [] } = useFuelTypes();
+
+  const brands = ['Todas', ...brandsData.map((b: any) => b.name)];
+  const fuelTypes = ['Todos', ...Object.values(fuelTypeLabels)];
 
   return (
     <Card className="sticky top-20">

@@ -1,7 +1,8 @@
 import { Car, Fuel, Gauge } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Vehicle, fuelTypeLabels } from "@/data/mockVehicles";
+import { Vehicle } from "@/types/vehicle";
+import { fuelTypeLabels } from "@/types/vehicle";
 import { useNavigate } from "react-router-dom";
 
 interface VehicleCardProps {
