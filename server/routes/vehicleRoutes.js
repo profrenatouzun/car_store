@@ -69,6 +69,9 @@ const router = express.Router();
  */
 router.get('/', vehicleController.getAll.bind(vehicleController));
 
+// Rotas de fotos dos veículos (aninhadas) - DEVEM VIR ANTES DE /:id
+router.use('/:id/photos', vehiclePhotoRoutes);
+
 /**
  * @swagger
  * /api/vehicles/{id}:
@@ -173,9 +176,6 @@ router.put('/:id', vehicleController.update.bind(vehicleController));
  *         description: Veículo não encontrado
  */
 router.delete('/:id', vehicleController.delete.bind(vehicleController));
-
-// Rotas de fotos dos veículos (aninhadas)
-router.use('/:id/photos', vehiclePhotoRoutes);
 
 export default router;
 
