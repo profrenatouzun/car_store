@@ -1,3 +1,23 @@
+-- ============================
+-- Script de Criação de Tabelas
+-- ============================
+-- Este script cria todas as tabelas do banco de dados
+-- Execute este script primeiro antes de inserir dados
+
+DROP TABLE IF EXISTS sales CASCADE;
+DROP TABLE IF EXISTS customers CASCADE;
+DROP TABLE IF EXISTS vehicle_photos CASCADE;
+DROP TABLE IF EXISTS vehicle_items CASCADE;
+DROP TABLE IF EXISTS vehicles CASCADE;
+DROP TABLE IF EXISTS items CASCADE;
+DROP TABLE IF EXISTS model CASCADE;
+DROP TABLE IF EXISTS brand CASCADE;
+DROP TABLE IF EXISTS fuel_type CASCADE;
+
+CREATE TABLE fuel_type (
+    fuel_type CHAR(1) PRIMARY KEY CHECK (fuel_type IN ('G','A','D','F')),
+    description VARCHAR(50) NOT NULL
+);
 
 CREATE TABLE brand (
     brand_id SERIAL PRIMARY KEY,
@@ -9,11 +29,6 @@ CREATE TABLE model (
     brand_id INT NOT NULL REFERENCES brand(brand_id),
     name VARCHAR(100) NOT NULL,
     UNIQUE (brand_id, name)
-);
-
-CREATE TABLE fuel_type (
-    fuel_type CHAR(1) PRIMARY KEY CHECK (fuel_type IN ('G','A','D','F')),
-    description VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE vehicles (
@@ -52,8 +67,11 @@ CREATE TABLE customers (
     full_name VARCHAR(120) NOT NULL,
     phone VARCHAR(30),
     email VARCHAR(120),
+    password VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
 
 CREATE TABLE sales (
     sale_id SERIAL PRIMARY KEY,
