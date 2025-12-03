@@ -42,12 +42,12 @@ class VehicleRepository {
     let paramCount = 1;
 
     if (filters.brand) {
-      conditions.push(`b.name = $${paramCount++}`);
+      conditions.push(`b.name ILIKE $${paramCount++}`);
       params.push(filters.brand);
     }
 
     if (filters.model) {
-      conditions.push(`m.name = $${paramCount++}`);
+      conditions.push(`m.name ILIKE $${paramCount++}`);
       params.push(filters.model);
     }
 
@@ -154,7 +154,7 @@ class VehicleRepository {
     `;
 
     const result = await pool.query(query, [id]);
-    
+
     if (result.rows.length === 0) {
       return null;
     }
@@ -177,7 +177,7 @@ class VehicleRepository {
 
   async create(vehicleData) {
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
 
@@ -186,7 +186,7 @@ class VehicleRepository {
         'SELECT brand_id FROM brand WHERE name = $1',
         [vehicleData.brand]
       );
-      
+
       let brandId;
       if (brandResult.rows.length === 0) {
         const insertBrand = await client.query(
@@ -203,7 +203,7 @@ class VehicleRepository {
         'SELECT model_id FROM model WHERE brand_id = $1 AND name = $2',
         [brandId, vehicleData.model]
       );
-      
+
       let modelId;
       if (modelResult.rows.length === 0) {
         const insertModel = await client.query(
@@ -244,7 +244,7 @@ class VehicleRepository {
             'SELECT item_id FROM items WHERE item_name = $1',
             [itemName]
           );
-          
+
           let itemId;
           if (itemResult.rows.length === 0) {
             const insertItem = await client.query(
@@ -286,7 +286,7 @@ class VehicleRepository {
 
   async update(id, vehicleData) {
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
 
@@ -297,7 +297,7 @@ class VehicleRepository {
           'SELECT brand_id FROM brand WHERE name = $1',
           [vehicleData.brand]
         );
-        
+
         if (brandResult.rows.length === 0) {
           const insertBrand = await client.query(
             'INSERT INTO brand (name) VALUES ($1) RETURNING brand_id',
@@ -316,7 +316,7 @@ class VehicleRepository {
           'SELECT model_id FROM model WHERE brand_id = $1 AND name = $2',
           [brandId, vehicleData.model]
         );
-        
+
         if (modelResult.rows.length === 0) {
           const insertModel = await client.query(
             'INSERT INTO model (brand_id, name) VALUES ($1, $2) RETURNING model_id',
@@ -393,7 +393,7 @@ class VehicleRepository {
               'SELECT item_id FROM items WHERE item_name = $1',
               [itemName]
             );
-            
+
             let itemId;
             if (itemResult.rows.length === 0) {
               const insertItem = await client.query(

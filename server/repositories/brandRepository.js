@@ -12,7 +12,7 @@ class BrandRepository {
   }
 
   async findByName(name) {
-    const result = await pool.query('SELECT * FROM brand WHERE name = $1', [name]);
+    const result = await pool.query('SELECT * FROM brand WHERE name ILIKE $1', [name]);
     return result.rows[0] || null;
   }
 
