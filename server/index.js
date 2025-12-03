@@ -10,6 +10,7 @@ import itemRoutes from './routes/itemRoutes.js';
 import fuelTypeRoutes from './routes/fuelTypeRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
 import saleRoutes from './routes/saleRoutes.js';
+import dialogflowRoutes from './routes/dialogflowRoutes.js';
 import pool from './config/database.js';
 
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/items', itemRoutes);
 app.use('/api/fuel-types', fuelTypeRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/sales', saleRoutes);
+app.use('/api/dialogflow', dialogflowRoutes);
 
 // 404 handler
 app.use((req, res) => {

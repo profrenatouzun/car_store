@@ -177,3 +177,40 @@ A API retorna os seguintes códigos de status:
 - `409` - Conflito (duplicata)
 - `500` - Erro interno do servidor
 
+## 🤖 Integrações com Plataformas de Chatbot
+
+A API suporta integração com as principais plataformas de chatbot:
+
+### Plataformas Suportadas
+
+- **Google DialogFlow** - Webhook dedicado com formato DialogFlow ES
+- **Microsoft Copilot Studio** - REST API padrão com Actions
+- **Qualquer plataforma REST** - Endpoints padrão JSON
+
+### Documentação de Integração
+
+- 📘 [Visão Geral de Integrações](./CHATBOT_INTEGRATIONS.md) - Comparação e escolha de plataforma
+- 📗 [Integração DialogFlow](./DIALOGFLOW_INTEGRATION.md) - Guia completo DialogFlow
+- 📙 [Integração Copilot Studio](./COPILOT_STUDIO_INTEGRATION.md) - Guia completo Copilot Studio
+
+### Quick Start DialogFlow
+
+```bash
+# Testar webhook DialogFlow
+curl http://localhost:3000/api/dialogflow/test
+
+# Exemplo de requisição
+curl -X POST http://localhost:3000/api/dialogflow/webhook \
+  -H "Content-Type: application/json" \
+  -d '{"queryResult":{"intent":{"displayName":"buscar.veiculos"},"parameters":{"marca":"Fiat"}}}'
+```
+
+### Quick Start Copilot Studio
+
+O Copilot Studio usa os endpoints REST padrão da API. Configure Actions apontando para:
+- `GET /api/vehicles` - Buscar veículos
+- `GET /api/brands` - Listar marcas
+- `GET /api/models` - Listar modelos
+
+Veja [COPILOT_STUDIO_INTEGRATION.md](./COPILOT_STUDIO_INTEGRATION.md) para instruções detalhadas.
+
